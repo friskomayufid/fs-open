@@ -1,17 +1,44 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+
+const Button = ({func, value}) => {
+  return <button onClick={func}>{value}</button>
+}
+
+const Statistic = ({text, value}) => {
+  return <p>{text} : {value}</p>
+}
+
+const App = () => {
+  const [feedback, setFeedback] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  })
+  let {good, neutral, bad} = feedback
+
+  const handleGood = () => setFeedback({...feedback, good: good + 1})
+  const handleNeutral = () => setFeedback({...feedback, neutral: neutral + 1})
+  const handleBad = () => setFeedback({...feedback, bad: bad + 1})
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button func={handleGood} value={'good'} />
+      <Button func={handleNeutral} value={'neutral'} />
+      <Button func={handleBad} value={'bad'} />
+      <h1>statistics</h1>
+      <Statistic text={'good'} value={good}/>
+      <Statistic text={'neutral'} value={neutral}/>
+      <Statistic text={'bad'} value={bad}/>
+      <Statistic text={'all'} value={good + neutral + bad}/>
+      <Statistic text={'average'} value={(good + neutral + bad) / 3}/>
+      <Statistic text={'positive'} value={(good + neutral - bad) / 3}/>
+    </div>
+  )
+}
+
+ReactDOM.render(<App />, 
   document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+)
